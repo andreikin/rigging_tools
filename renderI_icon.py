@@ -22,7 +22,7 @@ def crop_images(image_path, fild=5):
     return img
 
 
-def render_icon(width=200):
+def render_icon(width=100):
     # render setup
     cmds.setAttr("defaultRenderGlobals.currentRenderer", "mayaSoftware", type="string")
     cmds.setAttr("defaultRenderGlobals.imageFormat", 8)
@@ -52,9 +52,15 @@ def render_icon(width=200):
         cmds.sets(geo[0], e=True, forceElement=shaderSG)
         nodes_for_del += geo
 
-    image_path = cmds.render("persp", x=500, y=500)
-    img = crop_images(image_path, fild=20)
-    img = img.transformed(QMatrix().scale(0.5))
-    img.save(image_path)
+    image_path = cmds.render("persp", x=640, y=480)
+    #img = QImage(image_path, '.jpg')
 
-    cmds.delete(nodes_for_del)   
+
+    img = crop_images(image_path, fild=100)
+    img = img.scaledToWidth(60,  Qt.SmoothTransformation)
+    img.save(image_path)
+    print image_path
+
+    cmds.delete(nodes_for_del)
+    cmds.select(ct)
+render_icon(width=200)
